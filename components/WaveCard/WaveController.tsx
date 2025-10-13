@@ -15,7 +15,7 @@ interface WaveControllerProps {
   reversedUrl: string | null;
   onRecord: () => void;
   onPlayPause: () => void;
-  colorHex: string; // Tailwind color class를 넘겨도 됨 (예: "emerald-500")
+  colorHex: string;
 }
 
 export function WaveController({
@@ -41,7 +41,7 @@ export function WaveController({
             onClick={onRecord}
             icon={isRecording ? faMicrophoneSlash : faMicrophone}
             label={isRecording ? "녹음 종료" : "녹음 시작"}
-            colorClass={colorHex}
+            colorHex={colorHex}
           />
         ) : (
           <WaveButton
@@ -49,7 +49,7 @@ export function WaveController({
             onClick={onPlayPause}
             icon={isPlaying ? faStop : faPlay}
             label={isPlaying ? "정지" : "재생"}
-            colorClass={colorHex}
+            colorHex={colorHex}
           />
         )}
       </div>

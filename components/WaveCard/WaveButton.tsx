@@ -9,7 +9,7 @@ interface WaveButtonProps {
   onClick: () => void;
   icon: IconDefinition;
   label: string;
-  colorClass: string;
+  colorHex: string;
 }
 
 export function WaveButton({
@@ -17,19 +17,16 @@ export function WaveButton({
   onClick,
   icon,
   label,
-  colorClass,
+  colorHex,
 }: WaveButtonProps) {
   return (
     <button
       onClick={onClick}
       className={`flex items-center gap-2 px-2 py-1 cursor-pointer rounded-lg text-sm font-medium shadow transition ${
-        isActive ? "text-white" : "text-black"
+        isActive ? ` text-white` : "text-black"
       }`}
-      style={{
-        backgroundColor: isActive ? colorClass : "transparent",
-        borderColor: isActive ? colorClass : "transparent",
-      }}
       aria-pressed={isActive}
+      style={{ background: isActive ? colorHex : "#f5f5f5" }}
     >
       <FontAwesomeIcon icon={icon} className={isActive ? "opacity-90" : ""} />
       <span>{label}</span>
