@@ -3,6 +3,14 @@
 import useWave, { WaveStatus } from "@/lib/hooks/useWave";
 import { WaveController } from "./WaveController";
 import { WaveContainer } from "./WaveContainer";
+import { Header } from "./Header";
+import { WaveButton } from "./WaveButton";
+import {
+  faMicrophone,
+  faMicrophoneSlash,
+  faPlay,
+  faStop,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface WaveCardProps {
   id: string;
@@ -28,6 +36,9 @@ export function WaveCard({
   } = useWave({ color: colorHex, disabled, onEnd });
 
   const isRecordEnd = status >= WaveStatus.RECORD_END;
+  const isRecording = status === WaveStatus.RECORDING;
+  const isPlaying = status === WaveStatus.PLAYING;
+  const showRecord = !reversedRecordUrl;
 
   return (
     <div
@@ -42,28 +53,27 @@ export function WaveCard({
       {/* 카드 내용 */}
       <div className={`${disabled ? "opacity-60" : ""} pointer-events-auto`}>
         {/* 헤더 */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1">
-            <div
-              className="size-3 rounded-full"
-              style={{
-                backgroundColor: type === "original" ? "#999999" : colorHex,
-              }}
-            />
-            <h4 className="font-semibold text-sm">
-              {type === "original" ? "원본 녹음" : "리버스 챌린지"}
-            </h4>
-          </div>
-        </div>
-
+        <Header type={type} colorHex={colorHex} />
         {/* 컨트롤러 */}
-        <WaveController
-          status={status}
-          reversedUrl={reversedRecordUrl}
-          onRecord={handleRecord}
-          onPlayPause={handlePlayPause}
-          colorHex={colorHex}
-        />
+        <WaveController status={status} colorHex={colorHex}>
+          {showRecord ? (
+            <WaveButton
+              isActive={isRecording}
+              onClick={handleRecord}
+              icon={isRecording ? faMicrophoneSlash : faMicrophone}
+              label={isRecording ? "녹음 종료" : "녹음 시작"}
+              colorHex={colorHex}
+            />
+          ) : (
+            <WaveButton
+              isActive={isPlaying}
+              onClick={handlePlayPause}
+              icon={isPlaying ? faStop : faPlay}
+              label={isPlaying ? "정지" : "재생"}
+              colorHex={colorHex}
+            />
+          )}
+        </WaveController>
 
         {/* 파형 컨테이너 */}
         <div className="mt-3">

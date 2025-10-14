@@ -42,6 +42,7 @@ export function UserInput({
 
       <div className="flex flex-col gap-2 items-end">
         <button
+          type="button"
           onClick={() => removeUser(id)}
           className="text-xs text-red-600 hover:underline"
           aria-label={`Remove ${id}`}

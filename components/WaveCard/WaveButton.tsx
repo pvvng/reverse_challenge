@@ -22,13 +22,12 @@ export function WaveButton({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 px-2 py-1 cursor-pointer rounded-lg text-sm font-medium shadow transition ${
-        isActive ? ` text-white` : "text-black"
-      }`}
+      className={`flex items-center gap-2 px-2 py-1 cursor-pointer rounded-lg text-sm font-medium shadow transition
+        hover:scale-95 ${isActive ? ` text-white` : "text-black"}`}
       aria-pressed={isActive}
       style={{ background: isActive ? colorHex : "#f5f5f5" }}
     >
-      <FontAwesomeIcon icon={icon} className={isActive ? "opacity-90" : ""} />
+      <FontAwesomeIcon icon={icon} />
       <span>{label}</span>
     </button>
   );
