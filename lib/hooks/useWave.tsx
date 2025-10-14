@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record.js";
 import { reverseAudioBlob } from "../utils/audio";
+import { toast } from "sonner";
 
 export enum WaveStatus {
   PENDING,
@@ -15,15 +16,15 @@ export enum WaveStatus {
 }
 
 interface UseWaveProps {
-  id: string;
-  type?: "original" | "reversed";
   color?: string;
+  disabled: boolean;
+  onEnd?: () => void;
 }
 
 export default function useWave({
-  id,
-  type = "original",
   color = "white",
+  disabled,
+  onEnd,
 }: UseWaveProps) {
   const waveOption = {
     cursorWidth: 2,
@@ -51,8 +52,6 @@ export default function useWave({
   const [status, setStatus] = useState(WaveStatus.PENDING);
 
   useEffect(() => {
-    let mounted = true;
-
     if (!containerRef.current) return;
     if (!ws.current) {
       ws.current = WaveSurfer.create({
@@ -70,8 +69,6 @@ export default function useWave({
     }
 
     return () => {
-      mounted = false;
-      // cleanup
       try {
         ws.current?.destroy();
       } catch {}
@@ -104,6 +101,7 @@ export default function useWave({
 
     recordRef.current = null;
     setStatus(WaveStatus.RECORD_END);
+    onEnd?.(); // 녹음 종료 콜백 실행
   };
 
   const startRecording = async () => {
@@ -140,10 +138,14 @@ export default function useWave({
   };
 
   const handlePlayPause = () => {
+    if (disabled) return toast.error("비활성화 상태입니다.");
+
     ws.current?.playPause();
   };
 
   const handleRecord = () => {
+    if (disabled) return toast.error("비활성화 상태입니다.");
+
     if (status === WaveStatus.RECORDING) {
       stopRecording();
     } else {

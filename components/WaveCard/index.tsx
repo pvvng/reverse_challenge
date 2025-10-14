@@ -8,61 +8,72 @@ interface WaveCardProps {
   id: string;
   type?: "original" | "reversed";
   colorHex: string;
+  disabled?: boolean;
+  onEnd: () => void;
 }
 
-export function WaveCard({ id, type = "original", colorHex }: WaveCardProps) {
+export function WaveCard({
+  id,
+  type = "original",
+  colorHex,
+  disabled = false,
+  onEnd,
+}: WaveCardProps) {
   const {
     containerRef,
     reversedRecordUrl,
     status,
     handleRecord,
     handlePlayPause,
-  } = useWave({
-    id,
-    color: colorHex,
-    type,
-  });
+  } = useWave({ color: colorHex, disabled, onEnd });
 
   const isRecordEnd = status >= WaveStatus.RECORD_END;
 
   return (
     <div
       key={`${id}:${type}`}
-      className="rounded-2xl p-4 shadow-lg border"
-      style={{ borderColor: `${colorHex}33` /* faint border */ }}
+      className="relative rounded-2xl p-4 shadow-lg border"
+      style={{ borderColor: `${colorHex}33` }}
     >
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-1">
-          <div
-            className="size-3 rounded-full"
-            style={{
-              backgroundColor: type === "original" ? "#999999" : colorHex,
-            }}
-          />
-          <h4 className="font-semibold text-sm">
-            {type === "original" ? "원본 녹음" : "리버스 챌린지"}
-          </h4>
+      {/* disabled overlay */}
+      {disabled && (
+        <div className="absolute inset-0 bg-neutral-300/80 rounded-2xl pointer-events-none" />
+      )}
+      {/* 카드 내용 */}
+      <div className={`${disabled ? "opacity-60" : ""} pointer-events-auto`}>
+        {/* 헤더 */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-1">
+            <div
+              className="size-3 rounded-full"
+              style={{
+                backgroundColor: type === "original" ? "#999999" : colorHex,
+              }}
+            />
+            <h4 className="font-semibold text-sm">
+              {type === "original" ? "원본 녹음" : "리버스 챌린지"}
+            </h4>
+          </div>
         </div>
-      </div>
 
-      {/* 컨트롤러 */}
-      <WaveController
-        status={status}
-        reversedUrl={reversedRecordUrl}
-        onRecord={handleRecord}
-        onPlayPause={handlePlayPause}
-        colorHex={colorHex}
-      />
-
-      {/* 파형 컨테이너 */}
-      <div className="mt-3">
-        <WaveContainer
-          containerRef={containerRef}
+        {/* 컨트롤러 */}
+        <WaveController
           status={status}
+          reversedUrl={reversedRecordUrl}
+          onRecord={handleRecord}
+          onPlayPause={handlePlayPause}
           colorHex={colorHex}
-          isRecordEnd={isRecordEnd}
         />
+
+        {/* 파형 컨테이너 */}
+        <div className="mt-3">
+          <WaveContainer
+            containerRef={containerRef}
+            status={status}
+            colorHex={colorHex}
+            isRecordEnd={isRecordEnd}
+          />
+        </div>
       </div>
     </div>
   );

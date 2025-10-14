@@ -1,12 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { TurnCard } from "./TurnCard";
 import { UserData } from "@/lib/types";
-import { updateTurn } from "@/lib/actions/updateTurn";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { destroySession } from "@/lib/actions/destroySession";
 import useGame from "@/lib/hooks/useGame";
 
 interface GameClientProps {
@@ -16,12 +11,7 @@ interface GameClientProps {
   initialCurrentTurn: number;
 }
 
-export function GameClient({
-  id,
-  users,
-  startAt,
-  initialCurrentTurn,
-}: GameClientProps) {
+export function GameClient({ id, users, initialCurrentTurn }: GameClientProps) {
   const { currentTurn, goToNextStep } = useGame({
     id,
     initialCurrentTurn,
@@ -30,7 +20,7 @@ export function GameClient({
 
   return (
     <TurnCard
-      key={id}
+      key={`${id}-${currentTurn}`}
       currentTurn={currentTurn}
       headCount={users.length}
       {...users[currentTurn]}

@@ -5,13 +5,21 @@ interface HoveringButtonProps {
   action?: () => void;
   icon: IconDefinition;
   label: string;
+  disabled?: boolean;
 }
 
-export function HoveringButton({ action, icon, label }: HoveringButtonProps) {
+export function HoveringButton({
+  action,
+  icon,
+  label,
+  disabled = false,
+}: HoveringButtonProps) {
   return (
     <button
-      className="px-3 py-1.5 rounded-2xl bg-black text-white flex gap-1 items-center font-semibold text-sm group"
+      className="px-3 py-1.5 rounded-2xl bg-black text-white flex gap-1 items-center font-semibold text-sm group
+      disabled:bg-[#999999]"
       onClick={action}
+      disabled={disabled}
     >
       <FontAwesomeIcon
         icon={icon}
