@@ -18,6 +18,7 @@ export function WaveCard({ id, type = "original", colorHex }: WaveCardProps) {
     handleRecord,
     handlePlayPause,
   } = useWave({
+    id,
     color: colorHex,
   });
 

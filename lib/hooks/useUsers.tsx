@@ -1,15 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CardColor } from "../types";
+import { CardColor, UserData } from "../types";
 import { getRandomId } from "../utils/random";
 import { toast } from "sonner";
-
-export type UserData = {
-  id: string;
-  color: CardColor;
-  name: string;
-};
 
 const COLORS: CardColor[] = ["blue", "yellow", "green", "orange"];
 

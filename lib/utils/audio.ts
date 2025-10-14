@@ -89,9 +89,3 @@ export const interleave = (buffer: AudioBuffer) => {
   }
   return result;
 };
-
-export const getReversedAutdioUrl = async (url: string) => {
-  const blob = await fetch(url).then((res) => res.blob());
-  const reversedBlob = await reverseAudioBlob(blob);
-  return URL.createObjectURL(reversedBlob);
-};

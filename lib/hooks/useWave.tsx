@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record.js";
-import { getReversedAutdioUrl } from "../utils/audio";
+import { reverseAudioBlob } from "../utils/audio";
+import { IDBPDatabase, openDB } from "idb";
 
 export enum WaveStatus {
   PENDING,
@@ -14,7 +15,12 @@ export enum WaveStatus {
   PAUSE,
 }
 
-export default function useWave({ color = "white" }: { color?: string } = {}) {
+interface UseWaveProps {
+  id: string;
+  color?: string;
+}
+
+export default function useWave({ id, color = "white" }: UseWaveProps) {
   const waveOption = {
     cursorWidth: 2,
     barRadius: 20,
@@ -33,6 +39,8 @@ export default function useWave({ color = "white" }: { color?: string } = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const ws = useRef<WaveSurfer>(null);
   const recordRef = useRef<RecordPlugin>(null);
+
+  const [recordUrl, setRecordUrl] = useState<string | null>(null);
   const [reversedRecordUrl, setReversedRecordUrl] = useState<string | null>(
     null
   );
@@ -60,8 +68,13 @@ export default function useWave({ color = "white" }: { color?: string } = {}) {
     if (!ws.current) return;
 
     setStatus(WaveStatus.PENDING);
+
+    const reversedBlob = await reverseAudioBlob(blob);
+
+    // audio url 저장
     const url = URL.createObjectURL(blob);
-    const reversed = await getReversedAutdioUrl(url);
+    const reversed = URL.createObjectURL(reversedBlob);
+    setRecordUrl(url);
     setReversedRecordUrl(reversed);
 
     ws.current.empty();
