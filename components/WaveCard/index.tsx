@@ -5,11 +5,12 @@ import { WaveController } from "./WaveController";
 import { WaveContainer } from "./WaveContainer";
 
 interface WaveCardProps {
+  id: string;
   type?: "original" | "reversed";
   colorHex: string;
 }
 
-export function WaveCard({ type = "original", colorHex }: WaveCardProps) {
+export function WaveCard({ id, type = "original", colorHex }: WaveCardProps) {
   const {
     containerRef,
     reversedRecordUrl,
@@ -24,6 +25,7 @@ export function WaveCard({ type = "original", colorHex }: WaveCardProps) {
 
   return (
     <div
+      key={`${id} ${type}`}
       className="rounded-2xl p-4 shadow-lg border"
       style={{ borderColor: `${colorHex}33` /* faint border */ }}
     >
@@ -31,7 +33,7 @@ export function WaveCard({ type = "original", colorHex }: WaveCardProps) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-1">
           <div
-            className="w-3 h-3 rounded-full"
+            className="size-3 rounded-full"
             style={{
               backgroundColor: type === "original" ? "#999999" : colorHex,
             }}

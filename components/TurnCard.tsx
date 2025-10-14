@@ -1,40 +1,64 @@
+import { CardColor } from "@/lib/types";
 import { WaveCard } from "./WaveCard";
+import { COLOR_MAP } from "@/lib/contant";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { UserIcon } from "./UserIcon";
+import { HoveringButton } from "./HoveringButton";
+import { getRandomId } from "@/lib/utils/random";
 
-export type CardColor = "blue" | "yellow" | "green" | "orange";
-const COLOR_MAP: Record<CardColor, string> = {
-  blue: "#3B82F6",
-  yellow: "#FBBF24",
-  green: "#22C55E",
-  orange: "#FB923C",
-};
+interface TurnCardProps {
+  currentTurn: number;
+  headCount: number;
+  id: string;
+  name: string;
+  color: CardColor;
+  goToNextTurn: () => void;
+}
 
 export function TurnCard({
   currentTurn,
   headCount,
+  id,
   name,
   color,
+  goToNextTurn,
+}: TurnCardProps) {
+  return (
+    <div className="space-y-10" key={id}>
+      <header className="flex gap-3 items-center">
+        <UserIcon color={color} name={name} />
+        <div className="w-full flex justify-between items-end">
+          <Info name={name} currentTurn={currentTurn} headCount={headCount} />
+          <HoveringButton
+            action={goToNextTurn}
+            icon={faArrowRight}
+            label="차례 넘기기"
+          />
+        </div>
+      </header>
+      <WaveCard id={id} colorHex={COLOR_MAP[color]} />
+      <WaveCard id={id} colorHex={COLOR_MAP[color]} type="reversed" />
+    </div>
+  );
+}
+
+function Info({
+  name,
+  currentTurn,
+  headCount,
 }: {
+  name: string;
   currentTurn: number;
   headCount: number;
-  name: string;
-  color: CardColor;
 }) {
   return (
-    <div className="space-y-10">
-      <div className="flex gap-3 items-center">
-        <div
-          className="aspect-square w-10 rounded-full shrink-0"
-          style={{ background: COLOR_MAP[color] }}
-        />
-        <div>
-          <h3 className="line-clamp-2 font-semibold text-2xl">{name}의 차례</h3>
-          <p className="text-sm text-neutral-500">
-            {currentTurn + 1} / {headCount} 번째 플레이어
-          </p>
-        </div>
-      </div>
-      <WaveCard colorHex={COLOR_MAP[color]} />
-      <WaveCard colorHex={COLOR_MAP[color]} type="reversed" />
+    <div>
+      <h3 className="line-clamp-1 text-2xl">
+        <span className="font-semibold">{name || "이름 없음"}</span>의 차례
+      </h3>
+      <p className="text-xs text-neutral-500">
+        {currentTurn + 1} / {headCount} 번째 플레이어
+      </p>
     </div>
   );
 }
