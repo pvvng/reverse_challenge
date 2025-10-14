@@ -20,13 +20,14 @@ export function WaveCard({ id, type = "original", colorHex }: WaveCardProps) {
   } = useWave({
     id,
     color: colorHex,
+    type,
   });
 
   const isRecordEnd = status >= WaveStatus.RECORD_END;
 
   return (
     <div
-      key={`${id} ${type}`}
+      key={`${id}:${type}`}
       className="rounded-2xl p-4 shadow-lg border"
       style={{ borderColor: `${colorHex}33` /* faint border */ }}
     >

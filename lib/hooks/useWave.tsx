@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record.js";
 import { reverseAudioBlob } from "../utils/audio";
-import { IDBPDatabase, openDB } from "idb";
 
 export enum WaveStatus {
   PENDING,
@@ -17,10 +16,15 @@ export enum WaveStatus {
 
 interface UseWaveProps {
   id: string;
+  type?: "original" | "reversed";
   color?: string;
 }
 
-export default function useWave({ id, color = "white" }: UseWaveProps) {
+export default function useWave({
+  id,
+  type = "original",
+  color = "white",
+}: UseWaveProps) {
   const waveOption = {
     cursorWidth: 2,
     barRadius: 20,
@@ -47,6 +51,8 @@ export default function useWave({ id, color = "white" }: UseWaveProps) {
   const [status, setStatus] = useState(WaveStatus.PENDING);
 
   useEffect(() => {
+    let mounted = true;
+
     if (!containerRef.current) return;
     if (!ws.current) {
       ws.current = WaveSurfer.create({
@@ -62,7 +68,16 @@ export default function useWave({ id, color = "white" }: UseWaveProps) {
         setStatus(WaveStatus.PAUSE);
       });
     }
-  }, []);
+
+    return () => {
+      mounted = false;
+      // cleanup
+      try {
+        ws.current?.destroy();
+      } catch {}
+      ws.current = null;
+    };
+  }, [color]);
 
   const handleRecordEnd = async (blob: Blob) => {
     if (!ws.current) return;
@@ -70,8 +85,6 @@ export default function useWave({ id, color = "white" }: UseWaveProps) {
     setStatus(WaveStatus.PENDING);
 
     const reversedBlob = await reverseAudioBlob(blob);
-
-    // audio url 저장
     const url = URL.createObjectURL(blob);
     const reversed = URL.createObjectURL(reversedBlob);
     setRecordUrl(url);
@@ -140,9 +153,9 @@ export default function useWave({ id, color = "white" }: UseWaveProps) {
 
   return {
     containerRef,
+    recordUrl,
     reversedRecordUrl,
     status,
-
     handleRecord,
     handlePlayPause,
   };
