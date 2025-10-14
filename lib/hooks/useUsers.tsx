@@ -55,10 +55,15 @@ export default function useUsers() {
     setUsers((prev) => prev.filter((u) => u.id !== id));
   };
 
+  const initUsers = () => {
+    setUsers([{ id: getRandomId(), color: "blue", name: getRandomId() }]);
+  };
+
   return {
     users,
     handleChange,
     addUser,
     removeUser,
+    initUsers,
   };
 }

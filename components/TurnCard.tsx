@@ -1,10 +1,12 @@
 import { CardColor } from "@/lib/types";
 import { WaveCard } from "./WaveCard";
 import { COLOR_MAP } from "@/lib/contant";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { UserIcon } from "./UserIcon";
 import { HoveringButton } from "./HoveringButton";
-import { getRandomId } from "@/lib/utils/random";
 
 interface TurnCardProps {
   currentTurn: number;
@@ -13,6 +15,7 @@ interface TurnCardProps {
   name: string;
   color: CardColor;
   goToNextTurn: () => void;
+  endGame: () => void;
 }
 
 export function TurnCard({
@@ -22,7 +25,10 @@ export function TurnCard({
   name,
   color,
   goToNextTurn,
+  endGame,
 }: TurnCardProps) {
+  const isLast = currentTurn === headCount - 1;
+
   return (
     <div className="space-y-10" key={id}>
       <header className="flex gap-3 items-center">
@@ -30,9 +36,9 @@ export function TurnCard({
         <div className="w-full flex justify-between items-end">
           <Info name={name} currentTurn={currentTurn} headCount={headCount} />
           <HoveringButton
-            action={goToNextTurn}
-            icon={faArrowRight}
-            label="차례 넘기기"
+            action={isLast ? endGame : goToNextTurn}
+            icon={isLast ? faRightFromBracket : faArrowRight}
+            label={isLast ? "게임 종료" : "차례 넘기기"}
           />
         </div>
       </header>

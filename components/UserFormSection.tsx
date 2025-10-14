@@ -1,5 +1,5 @@
 import { UserData } from "@/lib/hooks/useUsers";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserInput } from "./UserInput";
 
@@ -19,7 +19,10 @@ export function UserFormSection({
   return (
     <section>
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-lg font-medium">참가자 목록</h2>
+        <h2 className="text-lg flex gap-2 items-center">
+          <FontAwesomeIcon icon={faUsers} className="text-neutral-600" />
+          <span>참가자 목록</span>
+        </h2>
         {users.length < 4 && (
           <button
             onClick={addUser}
