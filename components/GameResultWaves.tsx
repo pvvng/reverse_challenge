@@ -41,10 +41,14 @@ export function GameResultWaves({
           rUrl = URL.createObjectURL(rBlob);
           setRevUrl(rUrl);
         }
-      } catch (e: any) {
-        // Abort-type 에러는 무시, 그 외는 로깅
-        if (e?.name === "AbortError") return;
-        console.error("getSavedAudio failed:", e);
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          // Abort-type 에러는 무시, 그 외는 로깅
+          if (e.name === "AbortError") return;
+          console.error("getSavedAudio failed:", e);
+        } else {
+          console.error("getSavedAudio failed:", e);
+        }
       }
     };
 

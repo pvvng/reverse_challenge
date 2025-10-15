@@ -116,9 +116,12 @@ export default function useWave({
         setStatus(WaveStatus.RECORD_END);
         // callback도 ref로 안전하게 호출하는 편이 좋음
         callbackRef.current?.onEnd?.();
-      } catch (e: any) {
+      } catch (e: unknown) {
         // load가 중간에 취소되면 AbortError가 날 수 있음 — 무시
-        if (e?.name !== "AbortError") console.error(e);
+        if (e instanceof Error) {
+          // Abort-type 에러는 무시, 그 외는 로깅
+          if (e.name === "AbortError") console.error(e);
+        }
       }
     }
 
