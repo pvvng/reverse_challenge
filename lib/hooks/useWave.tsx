@@ -131,6 +131,25 @@ export default function useWave({
     };
   }, [reversedRecordUrl]);
 
+  useEffect(() => {
+    return () => {
+      // 녹음 중이면 먼저 중지
+      if (recordRef.current) {
+        try {
+          recordRef.current.stopRecording();
+        } catch {}
+        recordRef.current = null;
+      }
+      // wave destroy
+      if (ws.current) {
+        try {
+          ws.current.destroy();
+        } catch {}
+        ws.current = null;
+      }
+    };
+  }, []);
+
   const handleRecordEnd = async (blob: Blob) => {
     if (!ws.current) return;
 
@@ -199,9 +218,12 @@ export default function useWave({
   };
 
   const stopRecording = () => {
-    if (!recordRef.current) return;
     if (status === WaveStatus.PAUSE) return;
-    recordRef.current?.stopRecording();
+    if (recordRef.current) {
+      try {
+        recordRef.current.stopRecording();
+      } catch {}
+    }
     setStatus(WaveStatus.PENDING);
   };
 
