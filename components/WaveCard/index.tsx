@@ -11,15 +11,16 @@ import {
   faPlay,
   faStop,
 } from "@fortawesome/free-solid-svg-icons";
-import { AudioType } from "@/lib/types";
+import { AudioType, CardColor } from "@/lib/types";
 
-interface WaveCardProps {
+export interface WaveCardProps {
   userId: string;
   gameId: string;
   type?: AudioType;
   colorHex: string;
   disabled?: boolean;
   initialUrl?: string | null;
+  onStart?: () => void;
   onEnd?: () => void;
 }
 
@@ -29,7 +30,8 @@ export function WaveCard({
   type = "original",
   colorHex,
   disabled = false,
-  initialUrl,
+  initialUrl = null,
+  onStart,
   onEnd,
 }: WaveCardProps) {
   const {
@@ -39,13 +41,9 @@ export function WaveCard({
     handleRecord,
     handlePlayPause,
   } = useWave({
-    gameId,
-    userId,
-    color: colorHex,
-    type,
-    disabled,
-    initialUrl,
-    onEnd,
+    id: { gameId, userId },
+    options: { colorHex, type, disabled, initialUrl },
+    callback: { onStart, onEnd },
   });
 
   const isRecordEnd = status >= WaveStatus.RECORD_END;
@@ -61,10 +59,14 @@ export function WaveCard({
     >
       {/* disabled overlay */}
       {disabled && (
-        <div className="absolute inset-0 bg-neutral-300/80 rounded-2xl pointer-events-none" />
+        <div className="absolute inset-0 bg-neutral-300/50 rounded-2xl pointer-events-none" />
       )}
       {/* 카드 내용 */}
-      <div className={`${disabled ? "opacity-60" : ""} pointer-events-auto`}>
+      <div
+        className={`${
+          disabled ? "pointer-events-none" : "pointer-events-auto"
+        } `}
+      >
         {/* 헤더 */}
         <Header type={type} colorHex={colorHex} />
         {/* 컨트롤러 */}

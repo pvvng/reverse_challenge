@@ -5,4 +5,5 @@ export const COLOR_MAP: Record<CardColor, string> = {
   yellow: "#FBBF24",
   green: "#22C55E",
   orange: "#FB923C",
+  white: "#ffffff",
 };

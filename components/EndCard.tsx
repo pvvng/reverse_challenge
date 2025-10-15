@@ -69,20 +69,20 @@ function UserWaves({
   }, [userId]);
 
   return (
-    <>
+    <section className="space-y-5">
       <WaveCard
         gameId={gameId}
         userId={userId}
         colorHex={COLOR_MAP[color]}
-        initialUrl={origUrl} // ← 초기 오디오 URL 전달
+        initialUrl={origUrl} // 초기 오디오 URL 전달
       />
       <WaveCard
         gameId={gameId}
         userId={userId + "-rev"}
         colorHex={COLOR_MAP[color]}
         type="reversed"
-        initialUrl={revUrl} // ← 리버스 오디오 URL 전달
+        initialUrl={revUrl} // 리버스 오디오 URL 전달
       />
-    </>
+    </section>
   );
 }

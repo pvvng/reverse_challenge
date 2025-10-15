@@ -17,26 +17,26 @@ export enum WaveStatus {
   PAUSE,
 }
 
-interface UseWaveProps {
-  gameId: string;
-  userId: string;
-  color?: string;
+export type IDS = { gameId: string; userId: string };
+export type Options = {
   type?: AudioType;
-  disabled: boolean;
+  colorHex?: string;
+  disabled?: boolean;
   initialUrl?: string | null;
+};
+export type Callback = {
+  onStart?: () => void;
   onEnd?: () => void;
+};
+
+export interface WaveProps {
+  id: IDS;
+  options?: Options;
+  callback?: Callback;
 }
 
-export default function useWave({
-  gameId,
-  userId,
-  color = "white",
-  type = "original",
-  disabled,
-  initialUrl,
-  onEnd,
-}: UseWaveProps) {
-  const waveOption = {
+const createWaveOption = (color: string) => {
+  return {
     cursorWidth: 2,
     barRadius: 20,
     barWidth: 6,
@@ -50,6 +50,23 @@ export default function useWave({
     cursorColor: color,
     progressColor: color,
   };
+};
+
+export default function useWave({
+  id,
+  options = {
+    type: "original",
+    colorHex: "#ffffff",
+    initialUrl: null,
+    disabled: false,
+  },
+  callback = {},
+}: WaveProps) {
+  const { gameId, userId } = id;
+  const type = options.type ?? "original";
+  const color = options.colorHex ?? "#ffffff";
+  const disabled = options.disabled ?? false;
+  const initialUrl = options.initialUrl ?? null;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const ws = useRef<WaveSurfer>(null);
@@ -65,7 +82,7 @@ export default function useWave({
     if (!containerRef.current) return;
     if (!ws.current) {
       ws.current = WaveSurfer.create({
-        ...waveOption,
+        ...createWaveOption(color),
         container: containerRef.current,
       });
       setStatus(WaveStatus.RECORD_READY);
@@ -78,6 +95,7 @@ export default function useWave({
       });
     }
 
+    // url 초깃값으로 들어오면 로드
     if (initialUrl) {
       // url 로드
       setRecordUrl(initialUrl);
@@ -89,7 +107,7 @@ export default function useWave({
         } catch {}
       });
       setStatus(WaveStatus.RECORD_END);
-      onEnd?.();
+      callback.onEnd?.();
     }
 
     return () => {
@@ -108,12 +126,16 @@ export default function useWave({
     const reversedBlob = await reverseAudioBlob(blob);
 
     // cache에 오디오 블롭 저장
-    await cacheAudio({
-      gameId,
-      userId,
-      blob: type === "original" ? blob : reversedBlob,
-      slot: type,
-    });
+    try {
+      await cacheAudio({
+        gameId,
+        userId,
+        blob: type === "original" ? blob : reversedBlob,
+        slot: type,
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
     const url = URL.createObjectURL(blob);
     const reversed = URL.createObjectURL(reversedBlob);
@@ -124,7 +146,7 @@ export default function useWave({
     ws.current.load(reversed);
     // 파형 색상 원복
     ws.current.setOptions({
-      ...waveOption,
+      ...createWaveOption(color),
       cursorColor: color,
       progressColor: color,
     });
@@ -134,18 +156,18 @@ export default function useWave({
 
     recordRef.current = null;
     setStatus(WaveStatus.RECORD_END);
-    onEnd?.(); // 녹음 종료 콜백 실행
+    callback.onEnd?.();
   };
 
   const startRecording = async () => {
     if (!ws.current || !containerRef.current) return;
     if (status === WaveStatus.RECORDING) return;
 
+    callback.onStart?.();
+
     // 녹음 진행중일때는 파형 흰색으로 고정
     ws.current.setOptions({
-      ...waveOption,
-      cursorColor: "#ffffff",
-      progressColor: "#ffffff",
+      ...createWaveOption("#ffffff"),
     });
 
     recordRef.current = ws.current.registerPlugin(
