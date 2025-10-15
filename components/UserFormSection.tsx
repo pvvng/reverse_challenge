@@ -24,8 +24,8 @@ export function UserFormSection() {
 
   return (
     <section className="space-y-5">
-      <div className="flex gap-2 items-center">
-        <h2 className="flex gap-2 items-center text-lg">
+      <div className="flex gap-2 items-center justify-between">
+        <h2 className="flex gap-2 items-center md:text-lg text-md">
           <FontAwesomeIcon icon={faUsers} className="text-neutral-600" />
           <span>참가자 목록</span>
         </h2>

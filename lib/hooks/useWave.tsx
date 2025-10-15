@@ -71,6 +71,7 @@ export default function useWave({
   const containerRef = useRef<HTMLDivElement>(null);
   const ws = useRef<WaveSurfer>(null);
   const recordRef = useRef<RecordPlugin>(null);
+  const callbackRef = useRef<Callback>({});
 
   const [recordUrl, setRecordUrl] = useState<string | null>(null);
   const [reversedRecordUrl, setReversedRecordUrl] = useState<string | null>(
@@ -79,7 +80,13 @@ export default function useWave({
   const [status, setStatus] = useState(WaveStatus.PENDING);
 
   useEffect(() => {
+    callbackRef.current = callback;
+  }, []);
+
+  useEffect(() => {
     if (!containerRef.current) return;
+    let mounted = true;
+
     if (!ws.current) {
       ws.current = WaveSurfer.create({
         ...createWaveOption(color),
@@ -95,22 +102,28 @@ export default function useWave({
       });
     }
 
-    // url 초깃값으로 들어오면 로드
     if (initialUrl) {
-      // url 로드
-      setRecordUrl(initialUrl);
-      setReversedRecordUrl(initialUrl);
-      ws.current.load(initialUrl);
-      ws.current.once("ready", () => {
-        try {
-          ws.current?.seekTo(0);
-        } catch {}
-      });
-      setStatus(WaveStatus.RECORD_END);
-      callback.onEnd?.();
+      try {
+        setRecordUrl(initialUrl);
+        setReversedRecordUrl(initialUrl);
+        ws.current.load(initialUrl);
+        ws.current.once("ready", () => {
+          if (!mounted) return; // 언마운트 되었으면 아무것도 하지 않음
+          try {
+            ws.current?.seekTo(0);
+          } catch {}
+        });
+        setStatus(WaveStatus.RECORD_END);
+        // callback도 ref로 안전하게 호출하는 편이 좋음
+        callbackRef.current?.onEnd?.();
+      } catch (e: any) {
+        // load가 중간에 취소되면 AbortError가 날 수 있음 — 무시
+        if (e?.name !== "AbortError") console.error(e);
+      }
     }
 
     return () => {
+      mounted = false;
       try {
         ws.current?.destroy();
       } catch {}
@@ -188,14 +201,14 @@ export default function useWave({
 
     recordRef.current = null;
     setStatus(WaveStatus.RECORD_END);
-    callback.onEnd?.();
+    callbackRef.current.onEnd?.();
   };
 
   const startRecording = async () => {
     if (!ws.current || !containerRef.current) return;
     if (status === WaveStatus.RECORDING) return;
 
-    callback.onStart?.();
+    callbackRef.current.onStart?.();
 
     // 녹음 진행중일때는 파형 흰색으로 고정
     ws.current.setOptions({

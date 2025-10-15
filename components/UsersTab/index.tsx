@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EndCard } from "@/components/EndCard";
+import { GameResultWaves } from "@/components/GameResultWaves";
 import { UserData } from "@/lib/types";
 import { TabButton } from "./TabButton";
 
@@ -35,11 +35,9 @@ export function UsersTabs({ users, gameId }: UsersTabsProps) {
         ))}
       </nav>
 
-      <EndCard
+      <GameResultWaves
         key={selectedUser.id}
         gameId={gameId}
-        userTurn={selectedIdx}
-        headCount={users.length}
         {...selectedUser}
       />
     </section>

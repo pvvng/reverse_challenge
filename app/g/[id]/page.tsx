@@ -23,13 +23,11 @@ export default async function Game({ params }: IParams) {
   if (users.length <= 0) return notFound();
 
   return (
-    <main className="max-w-screen-md p-8 space-y-8 mx-auto font-paperlogy">
-      <GameClient
-        gameId={gameId}
-        users={users}
-        startAt={startAt}
-        initialCurrentTurn={currentTurn}
-      />
-    </main>
+    <GameClient
+      gameId={gameId}
+      users={users}
+      startAt={startAt}
+      initialCurrentTurn={currentTurn}
+    />
   );
 }
