@@ -118,6 +118,29 @@ export default function useWave({
     };
   }, [initialUrl, color]);
 
+  // recordUrl 변화 감지, 이전 URL 해제
+  useEffect(() => {
+    return () => {
+      if (recordUrl) URL.revokeObjectURL(recordUrl);
+    };
+  }, [recordUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (reversedRecordUrl) URL.revokeObjectURL(reversedRecordUrl);
+    };
+  }, [reversedRecordUrl]);
+
+  // 훅 cleanup
+  useEffect(() => {
+    return () => {
+      if (recordUrl) URL.revokeObjectURL(recordUrl);
+      if (reversedRecordUrl) URL.revokeObjectURL(reversedRecordUrl);
+      ws.current?.destroy();
+      ws.current = null;
+    };
+  }, []);
+
   const handleRecordEnd = async (blob: Blob) => {
     if (!ws.current) return;
 

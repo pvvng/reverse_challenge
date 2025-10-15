@@ -35,7 +35,7 @@ export default async function GameEnd({ params }: IParams) {
   }
 
   return (
-    <main className="max-w-screen-lg p-8 space-y-8 mx-auto font-paperlogy">
+    <main className="max-w-screen-md p-8 space-y-8 mx-auto font-paperlogy">
       <header className="flex justify-between items-end">
         <div>
           <h1 className="text-2xl font-semibold">게임 종료!</h1>

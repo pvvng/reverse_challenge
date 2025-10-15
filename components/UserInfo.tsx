@@ -13,7 +13,7 @@ export function UserInfo({
 }: UserInfoProps) {
   return (
     <div>
-      <h3 className="line-clamp-1 text-2xl">
+      <h3 className="line-clamp-1 text-md">
         <span className="font-semibold">{name || "이름 없음"}</span>
         {nameTag}
       </h3>

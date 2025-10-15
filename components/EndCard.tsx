@@ -52,20 +52,30 @@ function UserWaves({
   const [revUrl, setRevUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    let oUrl: string | null = null;
+    let rUrl: string | null = null;
+
     const getSavedAudio = async () => {
       const blob = await getCachedAudio(gameId, userId, "original");
       const rBlob = await getCachedAudio(gameId, userId, "reversed");
+
       if (blob) {
-        const oUrl = URL.createObjectURL(blob);
+        oUrl = URL.createObjectURL(blob);
         setOrigUrl(oUrl);
       }
       if (rBlob) {
-        const rUrl = URL.createObjectURL(rBlob);
+        rUrl = URL.createObjectURL(rBlob);
         setRevUrl(rUrl);
       }
     };
 
     getSavedAudio();
+
+    // 클린업
+    return () => {
+      if (oUrl) URL.revokeObjectURL(oUrl);
+      if (rUrl) URL.revokeObjectURL(rUrl);
+    };
   }, [userId]);
 
   return (
