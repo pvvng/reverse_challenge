@@ -11,20 +11,25 @@ import {
   faPlay,
   faStop,
 } from "@fortawesome/free-solid-svg-icons";
+import { AudioType } from "@/lib/types";
 
 interface WaveCardProps {
-  id: string;
-  type?: "original" | "reversed";
+  userId: string;
+  gameId: string;
+  type?: AudioType;
   colorHex: string;
   disabled?: boolean;
-  onEnd: () => void;
+  initialUrl?: string | null;
+  onEnd?: () => void;
 }
 
 export function WaveCard({
-  id,
+  userId,
+  gameId,
   type = "original",
   colorHex,
   disabled = false,
+  initialUrl,
   onEnd,
 }: WaveCardProps) {
   const {
@@ -33,7 +38,15 @@ export function WaveCard({
     status,
     handleRecord,
     handlePlayPause,
-  } = useWave({ color: colorHex, disabled, onEnd });
+  } = useWave({
+    gameId,
+    userId,
+    color: colorHex,
+    type,
+    disabled,
+    initialUrl,
+    onEnd,
+  });
 
   const isRecordEnd = status >= WaveStatus.RECORD_END;
   const isRecording = status === WaveStatus.RECORDING;
@@ -42,7 +55,7 @@ export function WaveCard({
 
   return (
     <div
-      key={`${id}:${type}`}
+      key={`${gameId}:${userId}:${type}`}
       className="relative rounded-2xl p-4 shadow-lg border"
       style={{ borderColor: `${colorHex}33` }}
     >

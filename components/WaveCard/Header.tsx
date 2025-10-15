@@ -1,10 +1,11 @@
-export function Header({
-  type,
-  colorHex,
-}: {
-  type: "original" | "reversed";
+import { AudioType } from "@/lib/types";
+
+interface HeaderProps {
+  type: AudioType;
   colorHex: string;
-}) {
+}
+
+export function Header({ type, colorHex }: HeaderProps) {
   return (
     <header className="flex items-center justify-between mb-3">
       <div className="flex items-center gap-1">

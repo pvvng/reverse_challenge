@@ -31,7 +31,7 @@ export default async function Game({ params }: IParams) {
   return (
     <main className="max-w-screen-md p-8 space-y-8 mx-auto font-paperlogy">
       <GameClient
-        id={gameId}
+        gameId={gameId}
         users={users}
         startAt={startAt}
         initialCurrentTurn={currentTurn}

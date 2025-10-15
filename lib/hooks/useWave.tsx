@@ -5,6 +5,8 @@ import WaveSurfer from "wavesurfer.js";
 import RecordPlugin from "wavesurfer.js/dist/plugins/record.js";
 import { reverseAudioBlob } from "../utils/audio";
 import { toast } from "sonner";
+import { cacheAudio } from "../cacheAudio";
+import { AudioType } from "../types";
 
 export enum WaveStatus {
   PENDING,
@@ -16,14 +18,22 @@ export enum WaveStatus {
 }
 
 interface UseWaveProps {
+  gameId: string;
+  userId: string;
   color?: string;
+  type?: AudioType;
   disabled: boolean;
+  initialUrl?: string | null;
   onEnd?: () => void;
 }
 
 export default function useWave({
+  gameId,
+  userId,
   color = "white",
+  type = "original",
   disabled,
+  initialUrl,
   onEnd,
 }: UseWaveProps) {
   const waveOption = {
@@ -68,13 +78,26 @@ export default function useWave({
       });
     }
 
+    if (initialUrl) {
+      setRecordUrl(initialUrl);
+      setReversedRecordUrl(initialUrl);
+      ws.current.load(initialUrl);
+      ws.current.once("ready", () => {
+        try {
+          ws.current?.seekTo(0);
+        } catch {}
+      });
+      setStatus(WaveStatus.RECORD_END);
+      onEnd?.();
+    }
+
     return () => {
       try {
         ws.current?.destroy();
       } catch {}
       ws.current = null;
     };
-  }, [color]);
+  }, [initialUrl, color]);
 
   const handleRecordEnd = async (blob: Blob) => {
     if (!ws.current) return;
@@ -82,6 +105,15 @@ export default function useWave({
     setStatus(WaveStatus.PENDING);
 
     const reversedBlob = await reverseAudioBlob(blob);
+
+    // cache에 오디오 블롭 저장
+    await cacheAudio({
+      gameId,
+      userId,
+      blob: type === "original" ? blob : reversedBlob,
+      slot: type,
+    });
+
     const url = URL.createObjectURL(blob);
     const reversed = URL.createObjectURL(reversedBlob);
     setRecordUrl(url);

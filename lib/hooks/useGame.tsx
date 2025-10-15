@@ -6,21 +6,23 @@ import { toast } from "sonner";
 import { updateEndAt } from "../actions/updateEndAt";
 import { useRouter } from "next/navigation";
 
-export default function useGame({
-  id,
-  initialCurrentTurn,
-  headCount,
-}: {
-  id: string;
+interface UseGameProps {
+  gameId: string;
   initialCurrentTurn: number;
   headCount: number;
-}) {
+}
+
+export default function useGame({
+  gameId,
+  initialCurrentTurn,
+  headCount,
+}: UseGameProps) {
   const router = useRouter();
   const [currentTurn, setCurrentTurn] = useState(initialCurrentTurn);
 
   const goNextTurn = async () => {
     try {
-      const newTurn = await updateTurn(id);
+      const newTurn = await updateTurn(gameId);
       setCurrentTurn(newTurn);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -33,8 +35,8 @@ export default function useGame({
 
   const endGame = async () => {
     try {
-      await updateEndAt(id);
-      return router.push("/");
+      await updateEndAt(gameId);
+      return router.push(`/g/${gameId}/end`);
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err.message);

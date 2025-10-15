@@ -14,6 +14,7 @@ import { useState } from "react";
 interface TurnCardProps {
   currentTurn: number;
   headCount: number;
+  gameId: string;
   id: string;
   name: string;
   color: CardColor;
@@ -24,7 +25,8 @@ interface TurnCardProps {
 export function TurnCard({
   currentTurn,
   headCount,
-  id,
+  gameId,
+  id: userId,
   name,
   color,
   isLast,
@@ -38,7 +40,7 @@ export function TurnCard({
   const canProceed = originalDone && reversedDone;
 
   return (
-    <div className="space-y-10" key={id}>
+    <div className="space-y-10" key={userId}>
       <header className="flex gap-3 items-center">
         <UserIcon color={color} name={name} />
         <div className="w-full flex justify-between items-end">
@@ -52,12 +54,14 @@ export function TurnCard({
         </div>
       </header>
       <WaveCard
-        id={id}
+        userId={userId}
+        gameId={gameId}
         colorHex={COLOR_MAP[color]}
         onEnd={() => setOriginalDone(true)}
       />
       <WaveCard
-        id={id}
+        userId={userId}
+        gameId={gameId}
         colorHex={COLOR_MAP[color]}
         type="reversed"
         disabled={!originalDone}

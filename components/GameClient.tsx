@@ -5,22 +5,27 @@ import { UserData } from "@/lib/types";
 import useGame from "@/lib/hooks/useGame";
 
 interface GameClientProps {
-  id: string;
+  gameId: string;
   users: UserData[];
   startAt: Date;
   initialCurrentTurn: number;
 }
 
-export function GameClient({ id, users, initialCurrentTurn }: GameClientProps) {
+export function GameClient({
+  gameId,
+  users,
+  initialCurrentTurn,
+}: GameClientProps) {
   const { currentTurn, goToNextStep } = useGame({
-    id,
+    gameId,
     initialCurrentTurn,
     headCount: users.length,
   });
 
   return (
     <TurnCard
-      key={`${id}-${currentTurn}`}
+      key={`${gameId}-${currentTurn}`}
+      gameId={gameId}
       currentTurn={currentTurn}
       headCount={users.length}
       {...users[currentTurn]}

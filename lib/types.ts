@@ -4,3 +4,4 @@ export type UserData = {
   color: CardColor;
   name: string;
 };
+export type AudioType = "original" | "reversed";
