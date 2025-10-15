@@ -28,6 +28,9 @@ export default function useGame({
     try {
       const newTurn = await updateTurn(gameId); // currentTurn 업데이트
       setCurrentTurn(newTurn);
+      // 상태 초기화
+      setOriginalDone(false);
+      setReversedDone(false);
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err.message);

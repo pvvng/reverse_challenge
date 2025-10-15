@@ -25,28 +25,6 @@ export function EndCard({
   name,
   color,
 }: EndCardProps) {
-  return (
-    <div className="space-y-5" key={userId}>
-      <header className="flex gap-3 items-center">
-        <UserIcon color={color} name={name} />
-        <div className="w-full flex justify-between items-end">
-          <UserInfo name={name} currentTurn={userTurn} headCount={headCount} />
-        </div>
-      </header>
-      <UserWaves gameId={gameId} userId={userId} color={color} />
-    </div>
-  );
-}
-
-function UserWaves({
-  gameId,
-  userId,
-  color,
-}: {
-  gameId: string;
-  userId: string;
-  color: CardColor;
-}) {
   // urls for original and reversed blobs
   const [origUrl, setOrigUrl] = useState<string | null>(null);
   const [revUrl, setRevUrl] = useState<string | null>(null);
@@ -79,20 +57,28 @@ function UserWaves({
   }, [gameId, userId]);
 
   return (
-    <section className="space-y-5">
-      <WaveCard
-        gameId={gameId}
-        userId={userId}
-        colorHex={COLOR_MAP[color]}
-        initialUrl={origUrl} // 초기 오디오 URL 전달
-      />
-      <WaveCard
-        gameId={gameId}
-        userId={userId + "-rev"}
-        colorHex={COLOR_MAP[color]}
-        type="reversed"
-        initialUrl={revUrl} // 리버스 오디오 URL 전달
-      />
-    </section>
+    <div className="space-y-5" key={userId}>
+      <header className="flex gap-3 items-center">
+        <UserIcon color={color} name={name} />
+        <div className="w-full flex justify-between items-end">
+          <UserInfo name={name} currentTurn={userTurn} headCount={headCount} />
+        </div>
+      </header>
+      <section className="space-y-5">
+        <WaveCard
+          gameId={gameId}
+          userId={userId}
+          colorHex={COLOR_MAP[color]}
+          initialUrl={origUrl} // 초기 오디오 URL 전달
+        />
+        <WaveCard
+          gameId={gameId}
+          userId={userId + "-rev"}
+          colorHex={COLOR_MAP[color]}
+          type="reversed"
+          initialUrl={revUrl} // 리버스 오디오 URL 전달
+        />
+      </section>
+    </div>
   );
 }

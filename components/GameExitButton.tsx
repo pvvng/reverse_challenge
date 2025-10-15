@@ -6,7 +6,12 @@ import { deleteAllForGame } from "@/lib/cacheAudio";
 import { redirect } from "next/navigation";
 import { destroySession } from "@/lib/actions/destroySession";
 
-export function DeleteAudioCacheButton({ gameId }: { gameId: string }) {
+interface GameExitButtonProps {
+  gameId: string;
+  goTo?: string;
+}
+
+export function GameExitButton({ gameId, goTo = "/" }: GameExitButtonProps) {
   return (
     <HoveringButton
       icon={faHome}
@@ -14,7 +19,7 @@ export function DeleteAudioCacheButton({ gameId }: { gameId: string }) {
       action={async () => {
         await deleteAllForGame(gameId);
         await destroySession();
-        redirect("/");
+        redirect(goTo);
       }}
     />
   );

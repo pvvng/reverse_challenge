@@ -54,8 +54,7 @@ export function WaveCard({
   return (
     <div
       key={`${gameId}:${userId}:${type}`}
-      className="relative rounded-2xl p-4 shadow-lg border"
-      style={{ borderColor: `${colorHex}33` }}
+      className="relative rounded-2xl p-4 shadow border border-neutral-100"
     >
       {/* disabled overlay */}
       {disabled && (
