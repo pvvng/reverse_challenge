@@ -8,7 +8,6 @@ export default function Home() {
         <p className="text-sm text-gray-600">참가자 정보 입력. 최대 4명</p>
       </header>
 
-      <hr className="border-neutral-200" />
       <UserFormSection />
     </main>
   );

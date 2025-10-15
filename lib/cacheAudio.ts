@@ -25,7 +25,6 @@ export async function cacheAudio({
   });
 
   await cache.put(request, response);
-  console.log(`✅ Saved ${key} to Cache Storage`);
 }
 
 export async function getCachedAudio(
@@ -49,7 +48,6 @@ export async function deleteCachedAudio(
   const cache = await caches.open("audio-cache");
   const key = `/audio/${gameId}/${userId}/${slot}`;
   await cache.delete(key);
-  console.log(`🗑️ Deleted ${key}`);
 }
 
 export async function deleteAllForGame(gameId: string) {
@@ -61,10 +59,8 @@ export async function deleteAllForGame(gameId: string) {
       await cache.delete(req);
     }
   }
-  console.log(`🗑️ Deleted all audios for game ${gameId}`);
 }
 
 export async function clearAudioCache() {
   await caches.delete("audio-cache");
-  console.log("🔥 Cleared all audio cache");
 }

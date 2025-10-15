@@ -3,13 +3,16 @@
 import {
   faGamepad,
   faSpinner,
+  faUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { UserInput } from "./UserInput";
+import { HoveringButton } from "./HoveringButton";
+
 import useUsers from "@/lib/hooks/useUsers";
 import { setUsers } from "@/lib/actions/setUsers";
-import { HoveringButton } from "./HoveringButton";
 
 export function UserFormSection() {
   const { users, handleChange, addUser, removeUser } = useUsers();
@@ -20,24 +23,16 @@ export function UserFormSection() {
   };
 
   return (
-    <section>
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="flex gap-2 items-center">
+    <section className="space-y-5">
+      <div className="flex gap-2 items-center">
+        <h2 className="flex gap-2 items-center text-lg">
           <FontAwesomeIcon icon={faUsers} className="text-neutral-600" />
           <span>참가자 목록</span>
         </h2>
-        {users.length < 4 && (
-          <button
-            onClick={addUser}
-            type="button"
-            className="inline-block px-2 py-1 rounded-2xl border border-neutral-200 shadow hover:bg-neutral-100 transition text-sm"
-          >
-            + 사용자 추가
-          </button>
-        )}
+        <AddUserButton headCount={users.length} addUser={addUser} />
       </div>
       {/* user 입력 폼 */}
-      <form className="flex flex-col gap-3" onSubmit={startGame}>
+      <form className="space-y-5" onSubmit={startGame}>
         {users.length === 0 ? (
           <NoUserDataSpinner />
         ) : (
@@ -50,20 +45,44 @@ export function UserFormSection() {
             />
           ))
         )}
-        <div className="flex justify-end">
-          <HoveringButton icon={faGamepad} label="게임 시작!" />
-        </div>
+        {users.length > 0 && (
+          <div className="flex justify-end mt-12">
+            <HoveringButton icon={faGamepad} label="게임 시작!" />
+          </div>
+        )}
       </form>
     </section>
   );
 }
 
+function AddUserButton({
+  headCount,
+  addUser,
+}: {
+  headCount: number;
+  addUser: () => void;
+}) {
+  if (headCount >= 4) return null;
+
+  return (
+    <button
+      onClick={addUser}
+      type="button"
+      className="inline-block px-2 py-1 rounded-2xl border bg-white border-neutral-200 hover:bg-neutral-100 transition text-xs"
+      title="새로운 플레이어 추가"
+      aria-label="새로운 플레이어 추가"
+    >
+      + <FontAwesomeIcon icon={faUser} />
+    </button>
+  );
+}
+
 function NoUserDataSpinner() {
   return (
-    <div className="w-full h-8 my-2">
+    <div className="w-full h-8 mt-8">
       <FontAwesomeIcon
         icon={faSpinner}
-        className="animate-spin text-xl inline-block"
+        className="animate-spin text-2xl inline-block"
       />
     </div>
   );

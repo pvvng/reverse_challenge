@@ -79,6 +79,7 @@ export default function useWave({
     }
 
     if (initialUrl) {
+      // url 로드
       setRecordUrl(initialUrl);
       setReversedRecordUrl(initialUrl);
       ws.current.load(initialUrl);

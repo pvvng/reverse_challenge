@@ -16,6 +16,7 @@ const pickAvailableColor = (currentUsers: UserData[]) => {
 
 export default function useUsers() {
   const [users, setUsers] = useState<UserData[]>([]);
+  // hydration 에러 방지
   useEffect(() => {
     setUsers([{ id: getRandomId(), color: "blue", name: getRandomId() }]);
   }, []);
