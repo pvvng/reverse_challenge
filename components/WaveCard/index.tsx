@@ -11,7 +11,7 @@ import {
   faPlay,
   faStop,
 } from "@fortawesome/free-solid-svg-icons";
-import { AudioType, CardColor } from "@/lib/types";
+import { AudioType } from "@/lib/types";
 
 export interface WaveCardProps {
   userId: string;

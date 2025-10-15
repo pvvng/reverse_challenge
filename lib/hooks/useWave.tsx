@@ -116,7 +116,7 @@ export default function useWave({
       } catch {}
       ws.current = null;
     };
-  }, [initialUrl, color]);
+  }, [initialUrl, color, callback]);
 
   // recordUrl 변화 감지, 이전 URL 해제
   useEffect(() => {
@@ -130,16 +130,6 @@ export default function useWave({
       if (reversedRecordUrl) URL.revokeObjectURL(reversedRecordUrl);
     };
   }, [reversedRecordUrl]);
-
-  // 훅 cleanup
-  useEffect(() => {
-    return () => {
-      if (recordUrl) URL.revokeObjectURL(recordUrl);
-      if (reversedRecordUrl) URL.revokeObjectURL(reversedRecordUrl);
-      ws.current?.destroy();
-      ws.current = null;
-    };
-  }, []);
 
   const handleRecordEnd = async (blob: Blob) => {
     if (!ws.current) return;

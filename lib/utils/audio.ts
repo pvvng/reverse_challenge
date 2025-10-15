@@ -69,7 +69,7 @@ export const audioBufferToWavBlob = (buffer: AudioBuffer): Blob => {
   const interleaved = interleave(buffer);
   let pos = offset;
   for (let i = 0; i < interleaved.length; i++, pos += 2) {
-    let sample = Math.max(-1, Math.min(1, interleaved[i]));
+    const sample = Math.max(-1, Math.min(1, interleaved[i]));
     view.setInt16(pos, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
   }
 

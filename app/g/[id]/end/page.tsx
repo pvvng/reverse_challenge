@@ -1,11 +1,7 @@
 import { DeleteAudioCacheButton } from "@/components/DeleteAudioCacheButton";
-import { EndCard } from "@/components/EndCard";
-import { HoveringButton } from "@/components/HoveringButton";
 import { UsersTabs } from "@/components/UsersTab";
-import { deleteAllForGame } from "@/lib/cacheAudio";
 import { getGameSession } from "@/lib/gameSession";
 import { formatPlayTime } from "@/lib/utils/time";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { notFound } from "next/navigation";
 
 interface IParams {

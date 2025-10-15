@@ -76,7 +76,7 @@ function UserWaves({
       if (oUrl) URL.revokeObjectURL(oUrl);
       if (rUrl) URL.revokeObjectURL(rUrl);
     };
-  }, [userId]);
+  }, [gameId, userId]);
 
   return (
     <section className="space-y-5">

@@ -38,7 +38,11 @@ export function GameClient({
     headCount: users.length,
   });
 
-  const { id: userId, name, color } = useMemo(() => users[currentTurn], []);
+  const {
+    id: userId,
+    name,
+    color,
+  } = useMemo(() => users[currentTurn], [users, currentTurn]);
   const isLast = currentTurn === users.length - 1;
 
   return (
