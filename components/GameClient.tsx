@@ -1,8 +1,17 @@
 "use client";
 
-import { TurnCard } from "./TurnCard";
 import { UserData } from "@/lib/types";
 import useGame from "@/lib/hooks/useGame";
+import { useMemo } from "react";
+import { UserIcon } from "./UserIcon";
+import { UserInfo } from "./UserInfo";
+import { HoveringButton } from "./HoveringButton";
+import {
+  faArrowRight,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { WaveCard } from "./WaveCard";
+import { COLOR_MAP } from "@/lib/contant";
 
 interface GameClientProps {
   gameId: string;
@@ -16,21 +25,58 @@ export function GameClient({
   users,
   initialCurrentTurn,
 }: GameClientProps) {
-  const { currentTurn, goToNextStep } = useGame({
+  const {
+    currentTurn,
+    originalDone,
+    reversedDone,
+    completeOriginal,
+    completeReversed,
+    goToNextStep,
+  } = useGame({
     gameId,
     initialCurrentTurn,
     headCount: users.length,
   });
 
+  const { id: userId, name, color } = useMemo(() => users[currentTurn], []);
+  const isLast = currentTurn === users.length - 1;
+
   return (
-    <TurnCard
-      key={`${gameId}-${currentTurn}`}
-      gameId={gameId}
-      currentTurn={currentTurn}
-      headCount={users.length}
-      {...users[currentTurn]}
-      isLast={currentTurn === users.length - 1}
-      goToNextStep={goToNextStep}
-    />
+    <div className="space-y-10" key={`${gameId}:${userId}:${currentTurn}`}>
+      <header className="flex gap-3 items-center">
+        <UserIcon color={color} name={name} />
+        <div className="w-full flex justify-between items-end">
+          <UserInfo
+            name={name}
+            nameTag="의 차례"
+            currentTurn={currentTurn}
+            headCount={users.length}
+          />
+          <HoveringButton
+            action={goToNextStep}
+            icon={isLast ? faRightFromBracket : faArrowRight}
+            label={isLast ? "게임 종료" : "차례 넘기기"}
+            disabled={!(originalDone && reversedDone)}
+          />
+        </div>
+      </header>
+      {/* Wave Card Section */}
+      <section className="space-y-5">
+        <WaveCard
+          userId={userId}
+          gameId={gameId}
+          colorHex={COLOR_MAP[color]}
+          onEnd={completeOriginal}
+        />
+        <WaveCard
+          userId={userId}
+          gameId={gameId}
+          colorHex={COLOR_MAP[color]}
+          type="reversed"
+          disabled={!originalDone}
+          onEnd={completeReversed}
+        />
+      </section>
+    </div>
   );
 }

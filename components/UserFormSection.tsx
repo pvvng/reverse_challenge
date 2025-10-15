@@ -47,7 +47,7 @@ export function UserFormSection() {
         )}
         {users.length > 0 && (
           <div className="flex justify-end mt-12">
-            <HoveringButton icon={faGamepad} label="게임 시작!" />
+            <HoveringButton icon={faGamepad} label="게임 시작!" type="submit" />
           </div>
         )}
       </form>

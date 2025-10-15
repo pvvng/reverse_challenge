@@ -6,6 +6,7 @@ import { COLOR_MAP } from "@/lib/contant";
 import { UserIcon } from "./UserIcon";
 import { useEffect, useState } from "react";
 import { getCachedAudio } from "@/lib/cacheAudio";
+import { UserInfo } from "./UserInfo";
 
 interface EndCardProps {
   userTurn: number;
@@ -29,7 +30,7 @@ export function EndCard({
       <header className="flex gap-3 items-center">
         <UserIcon color={color} name={name} />
         <div className="w-full flex justify-between items-end">
-          <Info name={name} userTurn={userTurn} headCount={headCount} />
+          <UserInfo name={name} currentTurn={userTurn} headCount={headCount} />
         </div>
       </header>
       <UserWaves gameId={gameId} userId={userId} color={color} />
@@ -83,26 +84,5 @@ function UserWaves({
         initialUrl={revUrl} // ← 리버스 오디오 URL 전달
       />
     </>
-  );
-}
-
-function Info({
-  name,
-  userTurn,
-  headCount,
-}: {
-  name: string;
-  userTurn: number;
-  headCount: number;
-}) {
-  return (
-    <div>
-      <h3 className="line-clamp-1 text-lg">
-        <span className="font-semibold">{name || "이름 없음"}</span>
-      </h3>
-      <p className="text-xs text-neutral-500">
-        {userTurn + 1} / {headCount} 번째 플레이어
-      </p>
-    </div>
   );
 }

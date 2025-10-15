@@ -18,11 +18,15 @@ export default function useGame({
   headCount,
 }: UseGameProps) {
   const router = useRouter();
+
   const [currentTurn, setCurrentTurn] = useState(initialCurrentTurn);
+  // original, reversed 각각 끝났는지 상태
+  const [originalDone, setOriginalDone] = useState(false);
+  const [reversedDone, setReversedDone] = useState(false);
 
   const goNextTurn = async () => {
     try {
-      const newTurn = await updateTurn(gameId);
+      const newTurn = await updateTurn(gameId); // currentTurn 업데이트
       setCurrentTurn(newTurn);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -35,7 +39,7 @@ export default function useGame({
 
   const endGame = async () => {
     try {
-      await updateEndAt(gameId);
+      await updateEndAt(gameId); // 게임 종료 시간 업데이트
       return router.push(`/g/${gameId}/end`);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -53,5 +57,15 @@ export default function useGame({
     return goNextTurn();
   };
 
-  return { currentTurn, goToNextStep };
+  const completeOriginal = () => setOriginalDone(true);
+  const completeReversed = () => setReversedDone(true);
+
+  return {
+    currentTurn,
+    originalDone,
+    reversedDone,
+    completeOriginal,
+    completeReversed,
+    goToNextStep,
+  };
 }
