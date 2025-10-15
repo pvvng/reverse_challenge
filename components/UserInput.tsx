@@ -14,6 +14,7 @@ const KO_COLOR_NAME: Record<CardColor, string> = {
   green: "초록",
   orange: "주황",
   yellow: "노랑",
+  white: "하양",
 };
 
 export function UserInput({
