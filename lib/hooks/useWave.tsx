@@ -116,7 +116,7 @@ export default function useWave({
       } catch {}
       ws.current = null;
     };
-  }, [initialUrl, color, callback]);
+  }, [initialUrl, color]);
 
   // recordUrl 변화 감지, 이전 URL 해제
   useEffect(() => {
