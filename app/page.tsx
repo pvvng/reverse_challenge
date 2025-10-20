@@ -4,8 +4,8 @@ import { UserFormSection } from "@/components/UserFormSection";
 
 export default function Home() {
   return (
-    <>
-      <div className="max-w-3xl mx-auto space-y-10">
+    <div>
+      <main className="mx-auto space-y-10">
         {/* 헤더 */}
         <header className="space-y-2 text-center">
           <AnimatedTitle />
@@ -17,7 +17,7 @@ export default function Home() {
 
         {/* 실제 폼 섹션 */}
         <UserFormSection />
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

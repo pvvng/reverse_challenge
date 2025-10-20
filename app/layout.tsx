@@ -8,6 +8,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { paperlogy } from "./fonts/paperlogy";
 import { Toaster } from "sonner";
+import { Footer } from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
         <main className="max-w-screen-md md:px-8 px-5 py-12 space-y-8 mx-auto font-paperlogy">
           {children}
         </main>
+        <Footer />
         <Toaster toastOptions={{ classNames: { toast: "font-paperlogy" } }} />
       </body>
     </html>
