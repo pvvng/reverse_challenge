@@ -9,6 +9,7 @@ import "./globals.css";
 import { paperlogy } from "./fonts/paperlogy";
 import { Toaster } from "sonner";
 import { Footer } from "@/components/Footer";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
   verification: {
     google: "X8abBNxolxp2vkT2B7w1uCMZm9zkCEGLo0xpbL7Fw9U",
   },
+  other: {
+    "google-adsense-account": "ca-pub-7034464923554278",
+  },
 };
 
 export default function RootLayout({
@@ -39,6 +43,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${paperlogy.variable} antialiased`}
       >
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7034464923554278"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
         <div id="portal" />
         <main className="max-w-screen-md md:px-8 px-5 py-12 space-y-8 mx-auto font-paperlogy">
           {children}
