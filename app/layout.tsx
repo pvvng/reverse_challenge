@@ -10,6 +10,7 @@ import { paperlogy } from "./fonts/paperlogy";
 import { Toaster } from "sonner";
 import { Footer } from "@/components/Footer";
 import Script from "next/script";
+import { GoogleAdSense } from "@/components/GoogleAdsense";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,11 +44,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${paperlogy.variable} antialiased`}
       >
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7034464923554278"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
         <div id="portal" />
         <main className="max-w-screen-md md:px-8 px-5 py-12 space-y-8 mx-auto font-paperlogy">
           {children}
@@ -55,6 +51,7 @@ export default function RootLayout({
         <Footer />
         <Toaster toastOptions={{ classNames: { toast: "font-paperlogy" } }} />
       </body>
+      <GoogleAdSense />
     </html>
   );
 }
