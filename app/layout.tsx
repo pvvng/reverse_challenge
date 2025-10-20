@@ -36,7 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${paperlogy.variable} antialiased`}
       >
         <div id="portal" />
-        <main className="max-w-screen-md md:p-8 p-4 space-y-8 mx-auto font-paperlogy">
+        <main className="max-w-screen-md md:px-8 px-5 py-12 space-y-8 mx-auto font-paperlogy">
           {children}
         </main>
         <Toaster toastOptions={{ classNames: { toast: "font-paperlogy" } }} />

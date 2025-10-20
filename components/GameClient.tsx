@@ -2,16 +2,19 @@
 
 import { UserData } from "@/lib/types";
 import useGame from "@/lib/hooks/useGame";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { UserIcon } from "./UserIcon";
 import { UserInfo } from "./UserInfo";
 import { HoveringButton } from "./HoveringButton";
 import {
   faArrowRight,
+  faQuestionCircle,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { WaveCard } from "./WaveCard";
 import { COLOR_MAP } from "@/lib/contant";
+import TutorialModal from "./Modal/TutorialModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface GameClientProps {
   gameId: string;
@@ -25,6 +28,10 @@ export function GameClient({
   users,
   initialCurrentTurn,
 }: GameClientProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModalOpen = () => setIsOpen((prev) => !prev);
+
   const {
     currentTurn,
     originalDone,
@@ -47,22 +54,34 @@ export function GameClient({
 
   return (
     <div className="space-y-10" key={`${gameId}:${userId}:${currentTurn}`}>
-      <header className="flex gap-3 sm:flex-row flex-col sm:justify-center items-end">
-        <div className="w-full flex gap-3 items-center">
-          <UserIcon color={color} name={name} />
-          <UserInfo
-            name={name}
-            nameTag="의 차례"
-            currentTurn={currentTurn}
-            headCount={users.length}
+      <header className="space-y-3">
+        <div>
+          {isOpen && <TutorialModal onClose={toggleModalOpen} />}
+          <button
+            onClick={toggleModalOpen}
+            className="text-sm text-blue-600 hover:text-blue-500 transition"
+          >
+            <FontAwesomeIcon icon={faQuestionCircle} />
+            플레이 방법을 모르겠다면?
+          </button>
+        </div>
+        <div className="flex gap-3 sm:flex-row flex-col sm:justify-center items-end">
+          <div className="w-full flex gap-3 items-center">
+            <UserIcon color={color} name={name} />
+            <UserInfo
+              name={name}
+              nameTag="의 차례"
+              currentTurn={currentTurn}
+              headCount={users.length}
+            />
+          </div>
+          <HoveringButton
+            action={goToNextStep}
+            icon={isLast ? faRightFromBracket : faArrowRight}
+            label={isLast ? "게임 종료" : "차례 넘기기"}
+            disabled={!(originalDone && reversedDone)}
           />
         </div>
-        <HoveringButton
-          action={goToNextStep}
-          icon={isLast ? faRightFromBracket : faArrowRight}
-          label={isLast ? "게임 종료" : "차례 넘기기"}
-          disabled={!(originalDone && reversedDone)}
-        />
       </header>
       {/* Wave Card Section */}
       <section className="space-y-5">

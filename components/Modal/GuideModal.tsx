@@ -7,11 +7,11 @@ import Overlay from "./Overlay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
-interface ShareDeokDamModalProps {
+interface GuideModalProps {
   onClose: () => void;
 }
 
-export default function GuideModal({ onClose }: ShareDeokDamModalProps) {
+export default function GuideModal({ onClose }: GuideModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
