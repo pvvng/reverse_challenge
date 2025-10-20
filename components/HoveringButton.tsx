@@ -23,7 +23,7 @@ export function HoveringButton({
       onClick={action}
       disabled={disabled}
       className="px-3 py-1.5 rounded-2xl bg-black text-white flex gap-1 items-center font-semibold text-sm 
-      disabled:bg-[#999999] disabled:cursor-not-allowed group"
+      disabled:bg-[#999999] disabled:cursor-not-allowed group shrink-0"
       {...rest}
     >
       <FontAwesomeIcon

@@ -229,8 +229,14 @@ export default function useWave({
 
     recordRef.current.on("record-end", handleRecordEnd);
 
-    await recordRef.current.startRecording();
     setStatus(WaveStatus.RECORDING);
+
+    try {
+      await recordRef.current.startRecording();
+    } catch (e) {
+      console.error(e);
+      setStatus(WaveStatus.RECORD_READY);
+    }
   };
 
   const stopRecording = () => {

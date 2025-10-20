@@ -30,8 +30,8 @@ export default async function GameEnd({ params }: IParams) {
 
   return (
     <>
-      <header className="flex justify-between items-end">
-        <div>
+      <header className="flex gap-3 sm:flex-row flex-col sm:justify-center items-end">
+        <div className="w-full">
           <h1 className="text-2xl font-semibold">게임 종료!</h1>
           <p className="text-sm text-gray-600">플레이타임: {playTime}</p>
         </div>

@@ -17,7 +17,7 @@ export function UserInfo({
         <span className="font-semibold">{name || "이름 없음"}</span>
         {nameTag}
       </h3>
-      <p className="text-xs text-neutral-500">
+      <p className="text-sm text-neutral-500">
         {currentTurn + 1} / {headCount} 번째 플레이어
       </p>
     </div>

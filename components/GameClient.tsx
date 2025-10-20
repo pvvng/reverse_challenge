@@ -47,22 +47,22 @@ export function GameClient({
 
   return (
     <div className="space-y-10" key={`${gameId}:${userId}:${currentTurn}`}>
-      <header className="flex gap-3 items-center">
-        <UserIcon color={color} name={name} />
-        <div className="w-full flex justify-between items-end">
+      <header className="flex gap-3 sm:flex-row flex-col sm:justify-center items-end">
+        <div className="w-full flex gap-3 items-center">
+          <UserIcon color={color} name={name} />
           <UserInfo
             name={name}
             nameTag="의 차례"
             currentTurn={currentTurn}
             headCount={users.length}
           />
-          <HoveringButton
-            action={goToNextStep}
-            icon={isLast ? faRightFromBracket : faArrowRight}
-            label={isLast ? "게임 종료" : "차례 넘기기"}
-            disabled={!(originalDone && reversedDone)}
-          />
         </div>
+        <HoveringButton
+          action={goToNextStep}
+          icon={isLast ? faRightFromBracket : faArrowRight}
+          label={isLast ? "게임 종료" : "차례 넘기기"}
+          disabled={!(originalDone && reversedDone)}
+        />
       </header>
       {/* Wave Card Section */}
       <section className="space-y-5">
