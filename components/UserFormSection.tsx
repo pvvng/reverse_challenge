@@ -25,7 +25,7 @@ export function UserFormSection() {
   return (
     <section className="space-y-5">
       <div className="flex gap-2 items-center justify-between">
-        <h2 className="flex gap-2 items-center md:text-lg text-md">
+        <h2 className="flex gap-2 items-center text-lg">
           <FontAwesomeIcon icon={faUsers} className="text-neutral-600" />
           <span>참가자 목록</span>
         </h2>
@@ -46,7 +46,7 @@ export function UserFormSection() {
           ))
         )}
         {users.length > 0 && (
-          <div className="flex justify-end mt-12">
+          <div className="flex justify-center mt-12">
             <HoveringButton icon={faGamepad} label="게임 시작!" type="submit" />
           </div>
         )}
@@ -79,10 +79,10 @@ function AddUserButton({
 
 function NoUserDataSpinner() {
   return (
-    <div className="w-full h-8 mt-8">
+    <div className="w-full h-8 mt-8 text-center">
       <FontAwesomeIcon
         icon={faSpinner}
-        className="animate-spin text-2xl inline-block"
+        className="animate-spin text-2xl inline-block text-neutral-600"
       />
     </div>
   );
