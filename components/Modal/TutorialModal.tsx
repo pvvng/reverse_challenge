@@ -40,7 +40,7 @@ const STEP_LIST: {
   {
     icon: faHeadphones,
     title: "리버스 챌린지 녹음",
-    label: "기억한 역재생본을 듣고, 리버스 챌린지를 녹음합니다.",
+    label: "역재생된 음성을 기억한 대로 최대한 똑같이 녹음하세요.",
     color: "bg-orange-500",
   },
   {

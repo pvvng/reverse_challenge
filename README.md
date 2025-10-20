@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 리버스 챌린지
 
-## Getting Started
+리버스 챌린지는 친구들과 함께하는 음성 기억 게임입니다.
+참가자는 차례대로 원본을 녹음하고, 역재생된 음성을 기억해 다시 녹음하며, 원본과 얼마나 유사하게 녹음할 수 있는지 겨룹니다.
 
-First, run the development server:
+## 🎮 플레이 순서
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **원본 녹음**  
+   참가자는 자신의 원본 음성을 녹음합니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **역재생 청취 및 기억**  
+   녹음된 원본을 역재생으로 듣고, 최대한 기억합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **리버스 챌린지 녹음**  
+   기억한 역재생 음성을 최대한 원본과 유사하게 다시 녹음합니다.  
+   즉, **자신이 기억한 역재생본을 따라 녹음**하는 단계입니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **결과 확인 / 다음 차례로 이동**  
+   녹음이 끝나면 이전 녹음과 비교하여 원본과 유사한지 확인 후, 다음 참가자가 차례를 이어갑니다.
 
-## Learn More
+## ⚡ 주요 기능
 
-To learn more about Next.js, take a look at the following resources:
+- **참가자 관리**  
+  최대 4명까지 참가자를 등록 및 삭제 가능.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **실시간 애니메이션**  
+  GSAP으로 자연스러운 등장/전환 애니메이션 적용.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **차례 기반 게임 진행**  
+  각 참가자의 순서를 직관적으로 표시하고, 버튼으로 차례 이동 가능.
 
-## Deploy on Vercel
+- **튜토리얼 가이드**  
+  첫 진입 시 단계별 플레이 가이드 제공.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠 기술 스택
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 14** – React 기반 프레임워크
+- **TypeScript** – 타입 안전성 확보
+- **Tailwind CSS** – 빠른 UI 스타일링
+- **GSAP** – UI/컴포넌트 애니메이션
+- **FontAwesome** – 아이콘 사용
+- **wavesurfer.js** - 오디오 시각화 및 재생/녹음
