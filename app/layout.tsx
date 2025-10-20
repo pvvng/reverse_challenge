@@ -9,7 +9,6 @@ import "./globals.css";
 import { paperlogy } from "./fonts/paperlogy";
 import { Toaster } from "sonner";
 import { Footer } from "@/components/Footer";
-import Script from "next/script";
 import { GoogleAdSense } from "@/components/GoogleAdsense";
 
 const geistSans = Geist({
