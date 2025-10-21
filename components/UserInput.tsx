@@ -72,7 +72,6 @@ export function UserInput({
       tl.to(
         root,
         {
-          boxShadow: "0 12px 30px rgba(16,24,40,0.08)",
           duration: 0.28,
           yoyo: true,
           repeat: 1,
