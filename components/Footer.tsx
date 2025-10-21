@@ -6,7 +6,7 @@ export function Footer() {
       <div className="w-full h-12 bg-transparent opacity-0" />
       <footer
         className="fixed bottom-0 left-0 right-0 h-12 flex justify-center items-center py-4 text-center text-xs 
-        text-neutral-400 border-t border-neutral-200 bg-white/30 backdrop-blur z-100"
+        text-neutral-400 border-t border-neutral-200 bg-white/30 backdrop-blur z-50"
       >
         ©{" "}
         <Link
